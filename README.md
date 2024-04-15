@@ -27,7 +27,7 @@ docker run -d --name="ovh-dyndns" \
 version: "3"
 services:
   crond:
-    image: ambroisemaupate/ovh-dyndns
+    image: eephyne/ovh-dyndns
     environment:
       HOST1: mydynamicdomain.domain.com
       LOGIN: mylogin
