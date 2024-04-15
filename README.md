@@ -14,7 +14,7 @@ you can set as many $HOSTX as you want, starting from 1 and incrementing
 if you need separate login and password, you can set LOGINX and PASSWORDX to match the host, if no LOGINX is fount it fallback to LOGIN and PASSWORD
 
 ```
-docker run -d --name="ovh-dyndns" \
+docker run -d --name="ovhdyndnsdocker" \
     -e "HOST1=mydynamicdomain.domain.com" \
     -e "LOGIN=mylogin" \
     -e "PASSWORD=mypassword" \
@@ -27,7 +27,7 @@ docker run -d --name="ovh-dyndns" \
 version: "3"
 services:
   crond:
-    image: eephyne/ovh-dyndns
+    image: eephyne/ovhdyndnsdocker
     environment:
       HOST1: mydynamicdomain.domain.com
       LOGIN: mylogin
@@ -46,7 +46,7 @@ By default, we use Google DNS to check your current DynDNS IP, but you can choos
 other DNS overriding `NSSERVER` env var:
 
 ```
-docker run -d --name="ovh-dyndns" \
+docker run -d --name="ovhdyndnsdocker" \
     -e "HOST1=mydynamicdomain.domain.com" \
     -e "LOGIN=mylogin" \
     -e "PASSWORD=mypassword" \

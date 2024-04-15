@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 # Mainly inspired by DynHost script given by OVH
 # New version by zwindler (zwindler.fr/wordpress)
 #
@@ -25,12 +25,12 @@ variable_exists() {
 
 getip() {
     IP=`curl http://ifconfig.me/ip`
-    OLDIP=`dig +short $HOST @$NSSERVER`
+    OLDIP=`dig +short $HOST1 @$NSSERVER`
 }
 
 echo "[`date '+%Y-%m-%d %H:%M:%S'`] ============================================================="
 echo "[`date '+%Y-%m-%d %H:%M:%S'`] Begining new dyndns check"
-getip
+getip 
 
 if [ "$IP" ]; then
     echo "[`date '+%Y-%m-%d %H:%M:%S'`] Old IP is ${OLDIP}"
@@ -45,15 +45,15 @@ if [ "$IP" ]; then
             if variable_exists "$var_name"; then
                 current_login=LOGIN
                 current_password=PASSWORD
-                echo "Host $var_name exists with value: ${!var_name}"
+                echo "[`date '+%Y-%m-%d %H:%M:%S'`] Host $var_name exists with value: ${!var_name}"
                 if variable_exists "LOGIN$index"; then
                     current_login="LOGIN$index"
                     current_password="PASSWORD$index"
                 fi
-                echo "${ENTRYPOINT}?system=dyndns&hostname=${!var_name}&myip=${IP}" --user="${!current_login}" --password="${!current_password}"
+                wget "${ENTRYPOINT}?system=dyndns&hostname=${!var_name}&myip=${IP}" --user="${!current_login}" --password="${!current_password}"
                 ((index++))
             else
-                echo "No more hosts found."
+                echo "[`date '+%Y-%m-%d %H:%M:%S'`] No more hosts found."
                 break
             fi
         done

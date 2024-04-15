@@ -27,11 +27,12 @@ COPY config/entrypoint.sh /srv/dyndns/entrypoint.sh
 COPY config/dynhost.sh /srv/dyndns/dynhost
 COPY config/cronjob.txt /etc/cron.d/dynhost
 
-RUN chmod +x /srv/dyndns/dynhost \
-    && chmod +x /srv/dyndns/entrypoint.sh \
-    && chmod +x /srv/dyndns/cmd.sh
+RUN chmod 755 /srv/dyndns/dynhost \
+    && chmod 755 /srv/dyndns/entrypoint.sh \
+    && chmod 755 /srv/dyndns/cmd.sh
 
 HEALTHCHECK --interval=5s --timeout=3s CMD ps aux | grep '[c]rond' || exit 1
 
 ENTRYPOINT ["/srv/dyndns/entrypoint.sh"]
+
 CMD ["/srv/dyndns/cmd.sh"]
