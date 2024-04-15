@@ -1,2 +1,2 @@
 # Exec dynhost every 5 minutes
-*/1 * * * * /bin/bash /srv/dyndns/dynhost 2>/proc/1/fd/2 | tee -a /proc/1/fd/1
+*/10 * * * * /bin/bash /srv/dyndns/dynhost 2>/proc/1/fd/2 | tee -a /proc/1/fd/1
