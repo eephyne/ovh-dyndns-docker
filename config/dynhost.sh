@@ -14,8 +14,14 @@
 #
 # Logfile: dynhost.log
 #
-# CHANGE: "HOST", "LOGIN" and "PASSWORD" to reflect YOUR account variables
+# CHANGE: "HOSTX", "LOGINX" and "PASSWORDX" to reflect YOUR accounts variables where X is a number starting from 0
+# you can use LOGIN and PASSWORD for setting one account for all hosts
 SCRIPT_PATH='/srv/dyndns'
+
+variable_exists() {
+    local var_name=$1
+    [[ ${!var_name} ]]
+}
 
 getip() {
     IP=`curl http://ifconfig.me/ip`
@@ -29,14 +35,32 @@ getip
 if [ "$IP" ]; then
     echo "[`date '+%Y-%m-%d %H:%M:%S'`] Old IP is ${OLDIP}"
     echo "[`date '+%Y-%m-%d %H:%M:%S'`] New IP is ${IP}"
-
+    
     if [ "$OLDIP" != "$IP" ]; then
         echo "[`date '+%Y-%m-%d %H:%M:%S'`] Update is needed…"
-        wget "${ENTRYPOINT}?system=dyndns&hostname=${HOST}&myip=${IP}" --user="${LOGIN}" --password="${PASSWORD}"
+        index=1
+        while true; do
+            var_name="HOST$index"
+            
+            if variable_exists "$var_name"; then
+                current_login=LOGIN
+                current_password=PASSWORD
+                echo "Host $var_name exists with value: ${!var_name}"
+                if variable_exists "LOGIN$index"; then
+                    current_login="LOGIN$index"
+                    current_password="PASSWORD$index"
+                fi
+                echo "${ENTRYPOINT}?system=dyndns&hostname=${!var_name}&myip=${IP}" --user="${!current_login}" --password="${!current_password}"
+                ((index++))
+            else
+                echo "No more hosts found."
+                break
+            fi
+        done
         echo -n "$IP" > $SCRIPT_PATH/old.ip
     else
         echo "[`date '+%Y-%m-%d %H:%M:%S'`] No update required."
     fi
- else
+else
     echo "[`date '+%Y-%m-%d %H:%M:%S'`] WAN IP not found. Exiting!"
- fi
+fi

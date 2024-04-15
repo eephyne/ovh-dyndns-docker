@@ -1,8 +1,8 @@
 ARG ARCH=
 FROM ${ARCH}alpine:latest
-MAINTAINER webhainaut <jerome@webhainaut.be>
+MAINTAINER eephyne <eephyne@gmail.com>
 
-ENV HOST=""
+ENV HOST1=""
 ENV LOGIN=""
 ENV PASSWORD=""
 ENV ENTRYPOINT="https://www.ovh.com/nic/update"
